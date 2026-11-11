@@ -1,0 +1,501 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Provider Dashboard - LocalServe</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <header class="navbar">
+
+        <div class="logo">LocalServe</div>
+
+        ion">
+            📍 Provider<div class="locat Dashboard
+        </div>
+
+        <div class="nav-links">
+
+            <button type="button"
+                onclick="window.location.href='index.html'">
+                Home
+            </button>
+
+            <button type="button" onclick="logout()">
+                Logout
+            </button>
+
+        </div>
+
+    </header>
+
+
+    
+
+        <main class="provider-dashboard">
+
+    
+
+    <!-- MY ORDERS OVERVIEW -->
+        <!-- MY ORDERS OVERVIEW -->
+
+        <div class="provider-form-card">
+
+            <h2>My Orders Overview</h2>
+
+            <div class="dashboard-stats">
+
+                <div class="booking-card">
+                    <h3>Total Orders</h3>
+                    <h2 id="totalOrders">0</h2>
+                </div>
+
+                <div class="booking-card">
+                    <h3>Pending Orders</h3>
+                    <h2 id="pendingOrders">0</h2>
+                </div>
+
+                <div class="booking-card">
+                    <h3>Accepted Orders</h3>
+                    <h2 id="acceptedOrders">0</h2>
+                </div>
+
+                <div class="booking-card">
+                    <h3>Rejected Orders</h3>
+                    <h2 id="rejectedOrders">0</h2>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- INCOMING BOOKINGS -->
+
+        <div class="provider-form-card">
+
+            <h2>Incoming Bookings</h2>
+
+            <p class="form-description">
+                View booking requests from customers.
+            </p>
+
+            <button
+                type="button"
+                class="create-profile-btn"
+                onclick="loadProviderBookings()">
+
+                View Bookings
+
+            </button>
+
+
+            <!-- BOOKING FILTERS -->
+
+            <div class="booking-filters">
+
+                <button
+                    type="button"
+                    class="filter-btn active"
+                    onclick="filterBookings('all')">
+
+                    All Orders
+
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    onclick="filterBookings('pending')">
+
+                    Pending
+
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    onclick="filterBookings('accepted')">
+
+                    Accepted
+
+                </button>
+
+                <button
+                    type="button"
+                    class="filter-btn"
+                    onclick="filterBookings('rejected')">
+
+                    Rejected
+
+                </button>
+
+            </div>
+
+
+            <!-- BOOKINGS LIST -->
+
+            <div id="providerBookings">
+
+                <p>No bookings loaded yet.</p>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- EXISTING PROJECT JAVASCRIPT -->
+
+    <script src="script.js"></script>
+
+
+    <!-- PROVIDER BOOKING JAVASCRIPT -->
+
+    <script>
+
+        let allProviderBookings = [];
+        let currentBookingFilter = "all";
+
+
+        // LOAD PROVIDER BOOKINGS
+
+        async function loadProviderBookings() {
+
+            const token = localStorage.getItem("token");
+
+            const bookingsContainer =
+                document.getElementById("providerBookings");
+
+            if (!token) {
+
+                alert("Please login first.");
+                window.location.href = "login.html";
+                return;
+
+            }
+
+            bookingsContainer.innerHTML =
+                "<p>Loading bookings...</p>";
+
+            try {
+
+                const response = await fetch(
+                    "http://localhost:5000/api/bookings/provider",
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    bookingsContainer.innerHTML =
+                        `<p>${data.message || "Failed to load bookings."}</p>`;
+
+                    return;
+
+                }
+
+
+                // STORE BOOKINGS
+
+                allProviderBookings = data.bookings || [];
+
+
+                // UPDATE ORDER COUNTERS
+
+                document.getElementById("totalOrders").textContent =
+                    allProviderBookings.length;
+
+                document.getElementById("pendingOrders").textContent =
+                    allProviderBookings.filter(
+                        booking => booking.status === "pending"
+                    ).length;
+
+                document.getElementById("acceptedOrders").textContent =
+                    allProviderBookings.filter(
+                        booking => booking.status === "accepted"
+                    ).length;
+
+                document.getElementById("rejectedOrders").textContent =
+                    allProviderBookings.filter(
+                        booking => booking.status === "rejected"
+                    ).length;
+
+
+                // DISPLAY BOOKINGS
+
+                renderProviderBookings();
+
+            }
+
+            catch (error) {
+
+                console.error("Load bookings error:", error);
+
+                bookingsContainer.innerHTML =
+                    "<p>Could not connect to the server.</p>";
+
+            }
+
+        }
+
+
+        // DISPLAY BOOKINGS
+
+        function renderProviderBookings() {
+
+            const bookingsContainer =
+                document.getElementById("providerBookings");
+
+            const filteredBookings =
+                currentBookingFilter === "all"
+                    ? allProviderBookings
+                    : allProviderBookings.filter(
+                        booking =>
+                            booking.status === currentBookingFilter
+                    );
+
+
+            if (allProviderBookings.length === 0) {
+
+                bookingsContainer.innerHTML =
+                    "<p>You don't have any bookings yet.</p>";
+
+                return;
+
+            }
+
+
+            if (filteredBookings.length === 0) {
+
+                bookingsContainer.innerHTML =
+                    "<p>No bookings found in this category.</p>";
+
+                return;
+
+            }
+
+
+            bookingsContainer.innerHTML =
+                filteredBookings.map(booking => {
+
+                    const bookingId =
+                        Number(booking.id ?? booking._id);
+
+                    const customerName =
+                        booking.customerName || "Customer";
+
+                    const customerEmail =
+                        booking.customerEmail || "Not available";
+
+                    const bookingDate =
+                        booking.bookingDate || booking.booking_date;
+
+                    const formattedDate = bookingDate
+                        ? new Date(bookingDate).toLocaleString()
+                        : "Not available";
+
+
+                    return `
+
+                        <div class="booking-card">
+
+                            <h3>
+                                ${booking.serviceType || booking.service_type || "Service"}
+                            </h3>
+
+                            <p>
+                                👤 Customer: ${customerName}
+                            </p>
+
+                            <p>
+                                📧 Email: ${customerEmail}
+                            </p>
+
+                            <p>
+                                📅 Date: ${formattedDate}
+                            </p>
+
+                            <p>
+                                📍 Address: ${booking.address || "Not provided"}
+                            </p>
+
+                            <p>
+                                💬 Message: ${booking.message || "No message"}
+                            </p>
+
+                            <p>
+                                <strong>
+                                    Status: ${booking.status}
+                                </strong>
+                            </p>
+
+                            ${
+                                booking.status === "pending" &&
+                                Number.isInteger(bookingId)
+                                ? `
+
+                                    <button
+                                        type="button"
+                                        onclick="acceptBooking(${bookingId})">
+
+                                        Accept
+
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        onclick="rejectBooking(${bookingId})">
+
+                                        Reject
+
+                                    </button>
+
+                                `
+                                : ""
+                            }
+
+                        </div>
+
+                    `;
+
+                }).join("");
+
+        }
+
+
+        // FILTER BOOKINGS
+
+        function filterBookings(status) {
+
+            currentBookingFilter = status;
+
+            document.querySelectorAll(".filter-btn").forEach(button => {
+
+                button.classList.remove("active");
+
+            });
+
+
+            const activeButton = document.querySelector(
+                `.filter-btn[onclick="filterBookings('${status}')"]`
+            );
+
+            if (activeButton) {
+
+                activeButton.classList.add("active");
+
+            }
+
+            renderProviderBookings();
+
+        }
+
+
+        // ACCEPT BOOKING
+
+        async function acceptBooking(bookingId) {
+
+            await updateBookingStatus(bookingId, "accept");
+
+        }
+
+
+        // REJECT BOOKING
+
+        async function rejectBooking(bookingId) {
+
+            await updateBookingStatus(bookingId, "reject");
+
+        }
+
+
+        // UPDATE BOOKING STATUS
+
+        async function updateBookingStatus(bookingId, action) {
+
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+
+                alert("Please login first.");
+                return;
+
+            }
+
+            try {
+
+                const response = await fetch(
+                    `http://localhost:5000/api/bookings/${action}/${bookingId}`,
+                    {
+                        method: "PUT",
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (!response.ok) {
+
+                    alert(data.message || "Could not update booking");
+                    return;
+
+                }
+
+
+                alert(
+                    action === "accept"
+                        ? "Booking accepted successfully!"
+                        : "Booking rejected successfully!"
+                );
+
+
+                // REFRESH BOOKINGS AND COUNTERS
+
+                await loadProviderBookings();
+
+            }
+
+            catch (error) {
+
+                console.error("Update booking error:", error);
+
+                alert("Could not connect to the server.");
+
+            }
+
+        }
+
+
+        // LOAD DASHBOARD DATA WHEN PAGE OPENS
+
+        document.addEventListener("DOMContentLoaded", () => {
+
+            loadProviderBookings();
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+

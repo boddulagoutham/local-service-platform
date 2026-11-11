@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Local Service Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>Local Service Platform</h1>
+        <h2>Create Account</h2>
+
+        <form id="registerForm">
+
+            <input
+                type="text"
+                id="name"
+                placeholder="Enter your name"
+                required
+            >
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter your email"
+                required
+            >
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+            >
+
+            <select id="role" required>
+                <option value="">Select Role</option>
+                <option value="customer">Customer</option>
+                <option value="provider">Service Provider</option>
+            </select>
+
+            <button type="submit">Register</button>
+
+        </form>
+
+        <p id="message"></p>
+
+        <p>
+            Already have an account?
+            <a href="login.html">Login</a>
+        </p>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

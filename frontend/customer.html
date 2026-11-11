@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Dashboard - LocalServe</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+        <div class="logo">LocalServe</div>
+
+        <nav>
+            <a href="index.html">Home</a>
+            <button onclick="logout()">Logout</button>
+        </nav>
+    </header>
+
+    <main class="customer-dashboard">
+
+        <section class="customer-welcome">
+            <h1>Welcome to LocalServe!</h1>
+            <p>Manage your service bookings in one place.</p>
+        </section>
+
+        <!-- Dashboard Statistics -->
+        <section class="customer-stats">
+
+            <div class="stat-card">
+                <h3>Total Bookings</h3>
+                <h2 id="customerTotal">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Pending</h3>
+                <h2 id="customerPending">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Accepted</h3>
+                <h2 id="customerAccepted">0</h2>
+            </div>
+
+            <div class="stat-card">
+                <h3>Rejected</h3>
+                <h2 id="customerRejected">0</h2>
+            </div>
+
+        </section>
+
+        <!-- Customer Booking Details -->
+        <section class="customer-bookings">
+
+            <h2>My Bookings</h2>
+
+            <div id="customerBookings">
+                <p>Loading your bookings...</p>
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
+

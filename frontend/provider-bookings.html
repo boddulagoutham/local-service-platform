@@ -1,0 +1,31 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalServe - Provider Bookings</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">LocalServe</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <button onclick="logout()">Logout</button>
+        </nav>
+    </header>
+
+    <main class="booking-dashboard">
+        <h1>Customer Booking Requests</h1>
+        <p>View requests and accept or reject bookings.</p>
+
+        <div id="bookingList">
+            <p>Loading booking requests...</p>
+        </div>
+    </main>
+
+    <script src="provider-bookings.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LocalServe - Home Services</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="navbar">
+        <div class="logo">Local<span>Serve</span></div>
+
+        
+        <nav class="nav-links">
+            <button id="bookingsNavButton" onclick="openMyBookings()">
+    My Bookings
+</button>
+            <button onclick="logout()">Logout</button>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+
+                <span class="hero-tag">YOUR LOCAL SERVICE PARTNER</span>
+
+                <h1>
+                    What service do you
+                    <span>need today?</span>
+                </h1>
+
+                <p>Find trusted professionals and services near you.</p>
+
+                <div class="search-box">
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search electrician, plumber, mechanic..."
+                    >
+
+                    <button onclick="searchServices()">
+                        🔍 Search
+                    </button>
+                </div>
+
+                <div class="hero-note">
+                    ✨ Easy booking • Trusted professionals • Nearby services
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Popular Services -->
+        <section class="categories">
+
+            <h2>Popular Services</h2>
+
+            <p class="section-subtitle">
+                Choose a service and discover available professionals near you.
+            </p>
+
+            <div class="category-grid">
+
+                <button class="category-card" onclick="selectService('Electrician')">
+                    <span class="category-icon">⚡</span>
+                    <h3 class="service-name">Electrician</h3>
+                    <p>Electrical repairs and installation</p>
+                    <span class="card-arrow">Explore →</span>
+                </button>
+
+                <button class="category-card" onclick="selectService('Plumber')">
+                    <span class="category-icon">🔧</span>
+                    <h3 class="service-name">Plumber</h3>
+                    <p>Pipe repairs and plumbing services</p>
+                    <span class="card-arrow">Explore →</span>
+                </button>
+
+                <button class="category-card" onclick="selectService('Mechanic')">
+                    <span class="category-icon">🚗</span>
+                    <h3 class="service-name">Mechanic</h3>
+                    <p>Vehicle repair and maintenance</p>
+                    <span class="card-arrow">Explore →</span>
+                </button>
+
+                <button class="category-card" onclick="selectService('Carpenter')">
+                    <span class="category-icon">🪚</span>
+                    <h3 class="service-name">Carpenter</h3>
+                    <p>Furniture and woodwork</p>
+                    <span class="card-arrow">Explore →</span>
+                </button>
+
+                <button class="category-card" onclick="selectService('Cleaning')">
+                    <span class="category-icon">🧹</span>
+                    <h3 class="service-name">Cleaning</h3>
+                    <p>Home and office cleaning</p>
+                    <span class="card-arrow">Explore →</span>
+                </button>
+
+                <button class="category-card" onclick="selectService('AC Repair')">
+                    <span class="category-icon">❄️</span>
+                    <h3 class="service-name">AC Repair</h3>
+                    <p>AC servicing and installation</p>
+                    <span class="card-arrow">Explore →</span>
+                </button>
+
+            </div>
+        </section>
+
+        <!-- Nearby Providers -->
+        <section class="nearby" id="nearbyProviders">
+
+            <h2>Nearby Service Providers</h2>
+
+            <p class="section-subtitle">
+                Find the right professional for your needs.
+            </p>
+
+            <div id="providers">
+
+                <div class="empty-message">
+                    <h3>Find Your Service Provider</h3>
+                    <p>Select a service category to see available providers.</p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Keep your existing JavaScript -->
+    <script src="script.js"></script>
+
+</body>
+</html>
